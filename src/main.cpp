@@ -33,13 +33,13 @@ int main(int argc, char* argv[]) {
         if (alg == "nsga") {
             NSGA_II nsga(config_filename);
             nsga.evolve(config_filename, data_filename_prefix + alg + currentDateTimeString + ".csv");
-        } else if (alg == "mod") {
+        } else if (alg == "dmoagent") {
             DMOAgent evo(config_filename);
             evo.evolve(config_filename, data_filename_prefix + alg + currentDateTimeString + ".csv");
-        } else if (alg == "mod_abl") {
+        } else if (alg == "dmobase") {
             DMOBase abl(config_filename);
             abl.evolve(config_filename, data_filename_prefix + alg + currentDateTimeString + ".csv");
-        } else if (alg == "mod_team_abl") {
+        } else if (alg == "dmoteam") {
             DMOTeam team_abl(config_filename);
             team_abl.evolve(config_filename, data_filename_prefix + alg + currentDateTimeString + ".csv");
         } 
