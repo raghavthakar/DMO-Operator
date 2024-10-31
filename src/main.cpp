@@ -3,10 +3,10 @@
 #include <chrono>
 #include <ctime>
 #include <sstream>
-#include "MOD.h" // Include your Evolutionary class header here
+#include "DMOAgent.h" // Include your Evolutionary class header here
 #include "NSGA_II.h"
-#include "MOD_ablated.h"
-#include "MOD_team_ablated.h"
+#include "DMOBase.h"
+#include "DMOTeam.h"
 
 // Function to get current date and time as a string
 std::string getCurrentDateTimeString() {
@@ -34,13 +34,13 @@ int main(int argc, char* argv[]) {
             NSGA_II nsga(config_filename);
             nsga.evolve(config_filename, data_filename_prefix + alg + currentDateTimeString + ".csv");
         } else if (alg == "mod") {
-            MOD evo(config_filename);
+            DMOAgent evo(config_filename);
             evo.evolve(config_filename, data_filename_prefix + alg + currentDateTimeString + ".csv");
         } else if (alg == "mod_abl") {
-            MODAblated abl(config_filename);
+            DMOBase abl(config_filename);
             abl.evolve(config_filename, data_filename_prefix + alg + currentDateTimeString + ".csv");
         } else if (alg == "mod_team_abl") {
-            MODTeamAblated team_abl(config_filename);
+            DMOTeam team_abl(config_filename);
             team_abl.evolve(config_filename, data_filename_prefix + alg + currentDateTimeString + ".csv");
         } 
     } else {
@@ -58,12 +58,12 @@ int main(int argc, char* argv[]) {
         configSrc.close();
         configDst.close();
 
-        MOD evo(config_filename);
-        evo.evolve(config_filename, data_filename_root + currentDateTimeString + "_MOD_.csv");
-        MODTeamAblated team_abl(config_filename);
-        team_abl.evolve(config_filename, data_filename_root + currentDateTimeString + "_MOD_TEAM_ABLATED_.csv");
-        MODAblated abl(config_filename);
-        abl.evolve(config_filename, data_filename_root + currentDateTimeString + "_MOD_ABLATED_.csv");
+        DMOAgent evo(config_filename);
+        evo.evolve(config_filename, data_filename_root + currentDateTimeString + "_DMO_AGENT_.csv");
+        DMOTeam dmoteam(config_filename);
+        dmoteam.evolve(config_filename, data_filename_root + currentDateTimeString + "_DMO_TEAM_.csv");
+        DMOBase dmobase(config_filename);
+        dmobase.evolve(config_filename, data_filename_root + currentDateTimeString + "_DMO_BASE_.csv");
         NSGA_II nsga(config_filename);
         nsga.evolve(config_filename, data_filename_root + currentDateTimeString + "_NSGA_II_.csv");
     }

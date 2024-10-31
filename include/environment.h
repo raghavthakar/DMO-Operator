@@ -1,7 +1,7 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
-#include "MOREPDomain.h"
+#include "MORover.h"
 #include <vector>
 #include <string>
 #include <utility>
@@ -10,7 +10,7 @@
 
 // Simulation environment class definition
 class Environment {
-    MOREPDomain rover_env;
+    MORover rover_env;
 public:
     // Method to load configuration from YAML file
     void loadConfig(const std::string& filename);

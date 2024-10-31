@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.12)
-project(MOD)
+project(DMO)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Optimization flags
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -flto -fopenmp -march=native -fvisibility-inlines-hidden")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
@@ -23,14 +23,14 @@ include_directories("libtorch/include")
 
 # Source files
 set(SOURCES
-    src/MOREPDomain.cpp
+    src/MORover.cpp
     src/environment.cpp
     src/policy.cpp
     src/team.cpp
     src/evolutionary_utils.cpp
-    src/MOD.cpp
-    src/MOD_ablated.cpp
-    src/MOD_team_ablated.cpp
+    src/DMOAgent.cpp
+    src/DMOBase.cpp
+    src/DMOTeam.cpp
     src/NSGA_II.cpp
     src/main.cpp
 )
