@@ -24,6 +24,7 @@ include_directories("libtorch/include")
 # Source files
 set(SOURCES
     src/MORover.cpp
+    src/MOBeach.cpp
     src/environment.cpp
     src/policy.cpp
     src/team.cpp

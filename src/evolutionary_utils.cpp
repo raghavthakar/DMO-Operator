@@ -35,18 +35,14 @@ std::vector<Environment> EvolutionaryUtils::generateTestEnvironments
     YAML::Node config = YAML::LoadFile(filename);
 
     int numberOfEnvironments = config["evolutionary"]["numberOfEpisodes"].as<int>();
-    bool differentEnvs = config["MORover"]["differentEnvs"].as<bool>();
 
     std::vector<Environment> testEnvironments;
     
     Environment env;
     env.loadConfig(filename);
     for(int i = 0; i < numberOfEnvironments; i++) {
-        // Load up a new env configuration if env should be different for each episode
-        if (differentEnvs) {
-            env.reset();
-            env.loadConfig(filename);
-        }
+        env.reset();
+        env.loadConfig(filename);
         testEnvironments.push_back(env);
     }
 
