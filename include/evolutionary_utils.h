@@ -23,7 +23,7 @@ public:
     Individual(const std::string& filename, int id);
     Individual(const std::string& filename, int id, std::vector<Agent> agents);
     // evaluate a team by simulating it and adding the rewards
-    std::vector<int> evaluate(const std::string& filename, std::vector<Environment> environments);
+    void evaluate(const std::string& filename, std::vector<Environment> environments);
     // difference-evaluate the team and update agent-level difference reward
     void differenceEvaluate(const std::string& filename, std::vector<Environment> environments, std::vector<Individual> paretoFront, int paretoIndex, double hypervolume, double lowerBound);
     // return the agents of the team

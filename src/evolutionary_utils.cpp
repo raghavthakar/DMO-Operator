@@ -440,37 +440,37 @@ Individual::Individual(const std::string& filename, int id, std::vector<Agent> a
     crowdingDistance = 0;
 }
 
-std::vector<int> Individual::evaluate(const std::string& filename, std::vector<Environment> environments) {
+void Individual::evaluate(const std::string& filename, std::vector<Environment> environments) {
     std::vector<std::vector<int>> stepwiseEpisodeReward; // Reward vector from each step of an episode
-    std::vector<int> cumulativeEpisodeReward; // Sum of stewise rewards of an episode
-    std::vector<std::vector<int>> cumulativeRewardsFromEachEpisode; // List of the cumulative episode rewards
-    std::vector<int> combinedCumulativeRewards; // Sum of the cumulative rewards
+    std::vector<int> aggregateEpisodeReward; // Sum of stewise rewards of an episode
+    std::vector<std::vector<int>> aggregateRewardsFromEachEpisode; // List of the cumulative episode rewards
+    std::vector<int> combinedAggregateRewards; // Sum of the cumulative rewards
     
+    // test on each instance of the environment and sum it up
     for (Environment env : environments) {
         env.reset();
         env.loadConfig(filename);
         stepwiseEpisodeReward = team.simulate(filename, env);
-        cumulativeEpisodeReward = std::vector<int>(stepwiseEpisodeReward[0].size(), 0);
+        aggregateEpisodeReward = std::vector<int>(stepwiseEpisodeReward[0].size(), 0);
 
         for (auto& episodeReward : stepwiseEpisodeReward) {
             for (size_t i=0; i< episodeReward.size(); i++) {
-                cumulativeEpisodeReward[i] += episodeReward[i];
+                aggregateEpisodeReward[i] += episodeReward[i];
             }
         }
         // tag the episode reward at the end of lsit
-        cumulativeRewardsFromEachEpisode.push_back(cumulativeEpisodeReward);
+        aggregateRewardsFromEachEpisode.push_back(aggregateEpisodeReward);
     }
 
-    combinedCumulativeRewards = std::vector<int>(cumulativeRewardsFromEachEpisode[0].size(), 0);
-    for (auto& cumulativeReward : cumulativeRewardsFromEachEpisode) {
-        for (size_t i=0; i< cumulativeReward.size(); i++) {
-            combinedCumulativeRewards[i] += cumulativeReward[i];
+    combinedAggregateRewards = std::vector<int>(aggregateRewardsFromEachEpisode[0].size(), 0);
+    for (auto& aggregateReward : aggregateRewardsFromEachEpisode) {
+        for (size_t i=0; i< aggregateReward.size(); i++) {
+            combinedAggregateRewards[i] += aggregateReward[i];
         }
     }
 
     // set the fitness of the individual
-    this->fitness = combinedCumulativeRewards;
-    return combinedCumulativeRewards;
+    this->fitness = combinedAggregateRewards;
 }
 
 // compute and update the difference evaluations member variable
