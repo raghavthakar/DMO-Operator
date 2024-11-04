@@ -79,27 +79,34 @@ Team::Team(const std::string& filename, int id) {
     const YAML::Node& team_config = config["team"]; // Team config info
     const YAML::Node& agent_config = config["agent"]; // Agent config info
 
-    bool randomStartPosition = agent_config["randomStartPosition"].as<bool>(); // Are the start pos random?
-
-    for (int i = 0; i < team_config["numberOfAgents"].as<int>(); i++) {
-        int posX, posY;
-        if (randomStartPosition == true) {
-            posX = rand() % config["MORover"]["dimensions"]["xLength"].as<int>();
-            posY = rand() % config["MORover"]["dimensions"]["yLength"].as<int>();
+    for (size_t i = 0; i < team_config["startingPositions"].size(); i++) {
+        for (size_t j = 0; j < team_config["startingPositions"][i]["count"].as<unsigned int>(); j++) {
+            int posX = team_config["startingPositions"][i]["position"][0].as<int>();
+            int posY = team_config["startingPositions"][i]["position"][1].as<int>();
+            agents.emplace_back(posX, posY, agent_config["maxStepSize"].as<int>(),
+                agent_config["observationRadius"].as<double>(),
+                agent_config["numberOfSensors"].as<int>(),
+                config["MORover"]["numberOfClassIds"].as<int>(),
+                agent_config["nnWeightMin"].as<double>(),
+                agent_config["nnWeightMax"].as<double>(),
+                agent_config["noiseMean"].as<double>(),
+                agent_config["noiseStdDev"].as<double>()); // Create agent object and store in vector
         }
-        else {
-            posX = config["agent"]["startingX"].as<int>();
-            posY = config["agent"]["startingY"].as<int>();
-        }
-        agents.emplace_back(posX, posY, agent_config["maxStepSize"].as<int>(),
-            agent_config["observationRadius"].as<double>(),
-            agent_config["numberOfSensors"].as<int>(),
-            config["MORover"]["numberOfClassIds"].as<int>(),
-            agent_config["nnWeightMin"].as<double>(),
-            agent_config["nnWeightMax"].as<double>(),
-            agent_config["noiseMean"].as<double>(),
-            agent_config["noiseStdDev"].as<double>()); // Create agent object and store in vector
     }
+
+    // for (int i = 0; i < team_config["numberOfAgents"].as<int>(); i++) {
+    //     int posX, posY;
+    //     posX = config["agent"]["startingX"].as<int>();
+    //     posY = config["agent"]["startingY"].as<int>();
+    //     agents.emplace_back(posX, posY, agent_config["maxStepSize"].as<int>(),
+    //         agent_config["observationRadius"].as<double>(),
+    //         agent_config["numberOfSensors"].as<int>(),
+    //         config["MORover"]["numberOfClassIds"].as<int>(),
+    //         agent_config["nnWeightMin"].as<double>(),
+    //         agent_config["nnWeightMax"].as<double>(),
+    //         agent_config["noiseMean"].as<double>(),
+    //         agent_config["noiseStdDev"].as<double>()); // Create agent object and store in vector
+    // }
 
     this->id = id; // Store the team id
 
@@ -108,11 +115,6 @@ Team::Team(const std::string& filename, int id) {
 
 Team::Team(const std::string& filename, std::vector<Agent> agents, int id) {
     YAML::Node config = YAML::LoadFile(filename); // Parse YAML from file
-
-    const YAML::Node& team_config = config["team"]; // Team config info
-    const YAML::Node& agent_config = config["agent"]; // Agent config info
-
-    bool randomStartPosition = agent_config["randomStartPosition"].as<bool>(); // Are the start pos random?
 
     this->agents = agents;
 

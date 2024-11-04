@@ -163,12 +163,12 @@ episode:
 
 team:
   numberOfAgents: 10
+  startingPositions:
+    - position: [80, 80]
+      count: 10 # Make sure this matches the numberof agents specified above
 # --------------------------------------
 
 agent:
-  randomStartPosition: false
-  startingX: 80
-  startingY: 80
   maxStepSize: 4
   observationRadius: 10.0
   numberOfSensors: 4

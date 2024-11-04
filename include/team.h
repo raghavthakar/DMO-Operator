@@ -12,6 +12,8 @@ class Agent {
 public:
     double posX; // X-coordinate of the agent's position
     double posY; // Y-coordinate of the agent's position
+    double startingX;
+    double startingY;
     double maxStepSize; // Maximum step size the agent can take
     double observationRadius; // How far can the agent see around it?
     int numberOfSensors; // How many sensors are around the agent
