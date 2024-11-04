@@ -5,16 +5,18 @@ project(DMO)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Optimization flags
+# Ensure debug symbols are generated
 set(CMAKE_BUILD_TYPE Debug)
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -flto -fopenmp -march=native -fvisibility-inlines-hidden")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+
+# Remove optimization flags for Debug mode
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 set(CMAKE_PREFIX_PATH libtorch)
 find_package(Torch REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 
-# Look for an installation of pagmo in the system.
+# Find Pagmo library
 find_package(Pagmo REQUIRED)
 
 # Include directories

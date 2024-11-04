@@ -134,7 +134,7 @@ std::vector<Agent> EvolutionaryUtils::crossover(Individual parent1, Individual p
 
 
 // Compute the hypervolume contained by the given pareto front
-double EvolutionaryUtils::getHypervolume(std::vector<Individual> individuals, int lowerBound) {
+double EvolutionaryUtils::getHypervolume(std::vector<Individual> individuals, double lowerBound) {
     // get the hypervolume computation reference point from the origin
     // reference poitn is -ve of original as pagmo likes it to be bigger than any other point
     // but for us it is smaller, so ive flipped signs everywhere for hypervolume computattion
@@ -154,7 +154,7 @@ double EvolutionaryUtils::getHypervolume(std::vector<Individual> individuals, in
 }
 
 // Compute the hypervolume contained by the given pareto front
-double EvolutionaryUtils::getHypervolume(std::vector<std::vector<int>> individualFitnesses, int lowerBound) {
+double EvolutionaryUtils::getHypervolume(std::vector<std::vector<int>> individualFitnesses, double lowerBound) {
     // get the hypervolume computation reference point from the origin
     // reference poitn is -ve of original as pagmo likes it to be bigger than any other point
     // but for us it is smaller, so ive flipped signs everywhere for hypervolume computattion

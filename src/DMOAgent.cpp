@@ -61,11 +61,18 @@ void DMOAgent::evolve(const std::string& filename, const std::string& data_filen
         // parallelised this
 
         // std::cout<<"Generation: "<<gen<<std::endl;
-        std::for_each(std::execution::par, population.begin(), population.end(), [&](Individual& ind) {
-            if (ind.fitness[0] == NONE) {
-                ind.evaluate(filename, envs);
-            }
-        });
+        // std::for_each(std::execution::par, population.begin(), population.end(), [&](Individual& ind) {
+        //     if (ind.fitness[0] == NONE) {
+        //         ind.evaluate(filename, envs);
+        //     }
+        // });
+
+        for (Individual& ind : population) {
+        if (ind.fitness[0] == NONE) {
+            ind.evaluate(filename, envs);
+        }
+    }
+
         // std::cout<<"Done evalsuting\n";
 
         std::vector<std::vector<Individual>> paretoFronts; // Better PFs first
