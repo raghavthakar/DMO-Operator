@@ -20,8 +20,8 @@ public:
     u_int nondominationLevel;
     double crowdingDistance;
     // wrapper around a team to keep it in the population
-    Individual(const std::string& filename, int id);
-    Individual(const std::string& filename, int id, std::vector<Agent> agents);
+    Individual(const std::string& filename, int id, std::string domainName);
+    Individual(const std::string& filename, int id, std::vector<Agent> agents, std::string domainName);
     // evaluate a team by simulating it and adding the rewards
     void evaluate(const std::string& filename, std::vector<Environment> environments);
     // difference-evaluate the team and update agent-level difference reward

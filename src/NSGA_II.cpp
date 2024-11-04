@@ -24,9 +24,10 @@ NSGA_II::NSGA_II(const std::string& filename) {
     numberOfEpisodes = evolutionary_config["numberOfEpisodes"].as<int>();
     populationSize = evolutionary_config["populationSize"].as<int>();
     teamIDCounter = 0;
+    domainName = config["experiment"]["domain"].as<std::string>();
 
     for (int i=0; i < populationSize; i++) {
-        population.push_back(Individual(filename, teamIDCounter++)); // Create a population of individuals with id
+        population.push_back(Individual(filename, teamIDCounter++, domainName)); // Create a population of individuals with id
     }
 }
 
@@ -179,7 +180,7 @@ void NSGA_II::evolve(const std::string& filename, const std::string& data_filena
             // generate a random list of indices = 1/2 of size of offspring and supply those agents from parent1
             // supply the others from parent2
             std::vector<Agent> offspringAgents = evoHelper.crossover(parent1, parent2);
-            population.push_back(Individual(filename, teamIDCounter++, offspringAgents));
+            population.push_back(Individual(filename, teamIDCounter++, offspringAgents, this->domainName));
         }
         
     }

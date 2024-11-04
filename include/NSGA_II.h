@@ -22,6 +22,7 @@ class NSGA_II {
     std::vector<Environment> generateTestEnvironments
         (const std::string& filename);
 public:
+    std::string domainName;
     std::vector<Individual> population;
     NSGA_II(const std::string& filename);
     void evolve(const std::string& filename, const std::string& data_filename);

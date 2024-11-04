@@ -414,11 +414,11 @@ std::vector<double> EvolutionaryUtils::getColumn(std::vector<std::vector<double>
     return column;
 }
 
-Individual::Individual(const std::string& filename, int id) : team(filename, id), id(id) {
+Individual::Individual(const std::string& filename, int id, std::string domainName) : team(filename, id, domainName), id(id) {
     YAML::Node config = YAML::LoadFile(filename);
 
     // Initialise the fitness of the individual as NONE
-    int numberOfObjectives = config["MORover"]["numberOfClassIds"].as<int>();
+    int numberOfObjectives = config[domainName]["numberOfClassIds"].as<int>();
     for(int i = 0; i < numberOfObjectives; i++) {
         fitness.push_back(NONE);
     }
@@ -427,12 +427,12 @@ Individual::Individual(const std::string& filename, int id) : team(filename, id)
     crowdingDistance = 0;
 }
 
-Individual::Individual(const std::string& filename, int id, std::vector<Agent> agents) : team(filename, agents, id), id(id) {
+Individual::Individual(const std::string& filename, int id, std::vector<Agent> agents, std::string domainName) : team(filename, agents, id, domainName), id(id) {
     YAML::Node config = YAML::LoadFile(filename);
 
     // Initialise the fitness of the individual as NONE
-    int numObjs = config["MORover"]["numberOfClassIds"].as<int>();
-    for(int i = 0; i < numObjs; i++) {
+    int numberOfObjectives = config[domainName]["numberOfClassIds"].as<int>();
+    for(int i = 0; i < numberOfObjectives; i++) {
         fitness.push_back(NONE);
     }
 

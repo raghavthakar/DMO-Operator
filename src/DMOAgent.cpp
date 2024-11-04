@@ -26,9 +26,10 @@ DMOAgent::DMOAgent(const std::string& filename) {
     numberOfEpisodes = evolutionary_config["numberOfEpisodes"].as<int>();
     populationSize = evolutionary_config["populationSize"].as<int>();
     teamIDCounter = 0;
+    domainName = config["experiment"]["domain"].as<std::string>();
 
     for (int i=0; i < populationSize; i++) {
-        population.push_back(Individual(filename, teamIDCounter++)); // Create a population of individuals with id
+        population.push_back(Individual(filename, teamIDCounter++, domainName)); // Create a population of individuals with id
     }
 }
 
@@ -175,7 +176,7 @@ void DMOAgent::evolve(const std::string& filename, const std::string& data_filen
             }
             
             // 4. Create a team from these assembled joint policies and add it to the populatino
-            Individual offspring = Individual(filename, this->teamIDCounter++, offSpringsAgents);
+            Individual offspring = Individual(filename, this->teamIDCounter++, offSpringsAgents, this->domainName);
             offspring.mutate();
             this->population.push_back(offspring);
         }

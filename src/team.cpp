@@ -27,12 +27,12 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
 // Constructor
 Agent::Agent(double x, double y, double _maxStepSize, double _observationRadius, 
     int _numberOfSensors, int numberOfClassIds, double _nnWeightMin, double _nnWeightMax, double _noiseMean, double _noiseStdDev) : 
-    posX(x), posY(y), maxStepSize(_maxStepSize), 
+    posX(x), posY(y), startingX(x), startingY(y), maxStepSize(_maxStepSize), 
     observationRadius(_observationRadius), numberOfSensors(_numberOfSensors), noiseMean(_noiseMean),
     noiseStdDev(_noiseStdDev), policy(2 + _numberOfSensors * (numberOfClassIds) + _numberOfSensors, _nnWeightMin, _nnWeightMax)  {}
 
 // copy constructor
-Agent::Agent(const Agent& other) : posX(other.posX), posY(other.posY), maxStepSize(other.maxStepSize), 
+Agent::Agent(const Agent& other) : posX(other.posX), posY(other.posY), startingX(other.startingX), startingY(other.startingY), maxStepSize(other.maxStepSize), 
     observationRadius(other.observationRadius), numberOfSensors(other.numberOfSensors), nnWeightMin(other.nnWeightMin), 
     nnWeightMax(other.nnWeightMax), noiseMean(other.noiseMean), noiseStdDev(other.noiseStdDev) {
         this->policy = *std::make_shared<Policy>(other.policy);;
@@ -73,7 +73,7 @@ int Agent::getMaxStepSize() const {
     return maxStepSize;
 }
 
-Team::Team(const std::string& filename, int id) {
+Team::Team(const std::string& filename, int id, std::string domainName_) {
     YAML::Node config = YAML::LoadFile(filename); // Parse YAML from file
 
     const YAML::Node& team_config = config["team"]; // Team config info
@@ -86,7 +86,7 @@ Team::Team(const std::string& filename, int id) {
             agents.emplace_back(posX, posY, agent_config["maxStepSize"].as<int>(),
                 agent_config["observationRadius"].as<double>(),
                 agent_config["numberOfSensors"].as<int>(),
-                config["MORover"]["numberOfClassIds"].as<int>(),
+                config[domainName_]["numberOfClassIds"].as<int>(),
                 agent_config["nnWeightMin"].as<double>(),
                 agent_config["nnWeightMax"].as<double>(),
                 agent_config["noiseMean"].as<double>(),
@@ -108,13 +108,17 @@ Team::Team(const std::string& filename, int id) {
     //         agent_config["noiseStdDev"].as<double>()); // Create agent object and store in vector
     // }
 
+    this->domainName = domainName_;
+
     this->id = id; // Store the team id
 
     this->teamTrajectory.clear(); // clears the teamTrajectory of the team
 }
 
-Team::Team(const std::string& filename, std::vector<Agent> agents, int id) {
+Team::Team(const std::string& filename, std::vector<Agent> agents, int id, std::string domainName_) {
     YAML::Node config = YAML::LoadFile(filename); // Parse YAML from file
+
+    this->domainName = domainName_;
 
     this->agents = agents;
 
@@ -146,20 +150,11 @@ std::vector<std::vector<int>> Team::simulate(const std::string& filename, Enviro
     
     const YAML::Node& agent_config = config["agent"]; // Agent config info
     
-    bool randomStartPosition = agent_config["randomStartPosition"].as<bool>(); // Are the start pos random?
     int startingX, startingY;
 
     for(auto& agent : agents) {
-        if (randomStartPosition == true) {
-            startingX = rand()%(environment.getDimensions().first+1); // Get random within limits
-            startingY = rand()%(environment.getDimensions().second+1);
-        } else {
-            startingX = agent_config["startingX"].as<int>(); // Read from config
-            startingY = agent_config["startingY"].as<int>();
-        }
-
         // reset the agents at the starting positions and clear the observations
-        agent.set(startingX, startingY);
+        agent.set(agent.startingX, agent.startingY);
     }
     
     // clear the teamTrajectory of the team

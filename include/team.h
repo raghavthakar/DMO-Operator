@@ -50,12 +50,13 @@ public:
 
 class Team {
 public:
+    std::string domainName;
     std::vector<Agent> agents; // Vector to store agents in team
     int id;
     std::vector<std::vector<std::pair<double, double>>> teamTrajectory;
     Team();
-    Team(const std::string& filename, int id); // Constructor
-    Team(const std::string& filename, std::vector<Agent> agents, int id); // Constructor
+    Team(const std::string& filename, int id, std::string domainName_); // Constructor
+    Team(const std::string& filename, std::vector<Agent> agents, int id, std::string domainName_); // Constructor
     void printInfo();
     std::vector<std::vector<int>> simulate(const std::string& filename, Environment environment);
     std::vector<std::vector<int>> replayWithCounterfactual(const std::string& filename, Environment environment, const std::string& counterfactualType);

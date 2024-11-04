@@ -22,6 +22,7 @@ class DMOAgent {
     std::vector<Environment> generateTestEnvironments
         (const std::string& filename);
 public:
+    std::string domainName;
     std::vector<Individual> population;
     DMOAgent(const std::string& filename);
     void evolve(const std::string& filename, const std::string& data_filename);
